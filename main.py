@@ -26,13 +26,13 @@ def onScreen(x, y):
 def sierpinski(x1, y1, x2, y2, x3, y3, counter, isEven, screen, scale):
     counter += 1
     if counter <= countScaleVal:
-        if isEven and counter == countScaleVal: #only draws the triangles on the 8th frame to prevent overdraw.
-            # r = random.randint(0, 255)#(counter * 100) % 255
-            # g = random.randint(0, 255)
-            # b = random.randint(0, 255)
-            # color = (r, g, b)
-            baseColor = 255
-            color = (baseColor, baseColor, baseColor)
+        if isEven and (counter == countScaleVal): #only draws the triangles on the 8th frame to prevent overdraw.
+            r = random.randint(0, 255)#(counter * 100) % 255
+            g = random.randint(0, 255)
+            b = random.randint(0, 255)
+            color = (r, g, b)
+            # baseColor = 255
+            # color = (baseColor, baseColor, baseColor)
             
             # pygame.draw.polygon(screen, color, ((x1, y1), (x2, y2), (x3, y3)))
             if onScreen(x1, y1) or onScreen(x2, y2):
@@ -52,7 +52,7 @@ def sierpinski(x1, y1, x2, y2, x3, y3, counter, isEven, screen, scale):
         midy3y1 = midPoint(y3, y1)
         midx3x2 = midPoint(x3, x2)
         midy3y2 = midPoint(y3, y2)
-        if onScreen(x1, y1) or onScreen(midx1x2, midy1y2) or onScreen(midx3x1, midy3y1) and counter > 2:
+        if onScreen(x1, y1) or onScreen(midx1x2, midy1y2) or onScreen(midx3x1, midy3y1):
             sierpinski(x1, y1, midx1x2, midy1y2, midx3x1, midy3y1, counter, isEven, screen, scale)
         if onScreen(midx1x2, midy1y2) or onScreen(x2, y2) or onScreen(midx3x2, midy3y2):
             sierpinski(midx1x2, midy1y2, x2, y2, midx3x2, midy3y2, counter, isEven, screen, scale)
@@ -105,14 +105,15 @@ while not doExit:
         countScaleVal = 8
     if keys[pygame.K_UP]:
         scale += scaleSpeed
-        # cameraX += moveSpeed
+        posx1 = screenX/2
+        cameraX -= (posx1 * scale) - (posx1 * (scale - scaleSpeed)) # current pos * scale - last frame's pos * scale. In other words, "delta posx1".
         # cameraY += moveSpeed
         if posx3 / (2 ** countScaleVal) > 7.5 and posx3 / (2 ** (countScaleVal + 1)) > 4.5:
             countScaleVal += 1
-        print("lines = " + str(lines), scale, countScaleVal, posx3 / (2 ** countScaleVal))
+        print("lines = " + str(lines), scale, countScaleVal, posx3 / (2 ** countScaleVal), 0*scale + cameraY)
     if keys[pygame.K_DOWN]:
         scale -= scaleSpeed
-        # cameraX += moveSpeed
+        cameraX += abs((posx1 * scale) - (posx1 * (scale - scaleSpeed)))
         # cameraY += moveSpeed
         if posx3 / (2 ** countScaleVal) < 4.5:
             countScaleVal -= 1
@@ -121,12 +122,12 @@ while not doExit:
     lines = 0
 
     screen.fill((0, 0, 0))
-    posx1 = (screenX/2 + cameraX) * scale
-    posy1 = (0 + cameraY) * scale
-    posx2 = (0 + cameraX) * scale# - ((screenY) * scale) - screenY
-    posy2 = (screenY + cameraY) * scale
-    posx3 = (screenX + cameraX) * scale
-    posy3 = (screenY + cameraY) * scale
+    posx1 = (screenX/2 * scale) + cameraX
+    posy1 = (0 * scale) + cameraY
+    posx2 = (0 * scale) + cameraX# - ((screenY) * scale) - screenY
+    posy2 = (screenY * scale) + cameraY
+    posx3 = (screenX * scale) + cameraX
+    posy3 = (screenY * scale) + cameraY
 
 
     sierpinski(posx1, posy1, posx2, posy2, posx3, posy3, 0, True, screen, scale)
