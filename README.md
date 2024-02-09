@@ -1,4 +1,12 @@
-# Sierpinski Triangle
- 2/5/24 Daily Code
+# Sierpinski Triangle With Scaling
 
- # contains all code to make a Sierpinski triangle in pygame. A link to the slideshow I followed is below screen initialization.
+## This is the fractal, sierpinski triangle, made in pygame.
+
+This project has python code to draw a sierpinski triangle using lines in pygame. It has scaling which allows for infinite zoom.
+
+# What I Learned:
+
+- recusive coding
+- screen culling
+- camera movement
+- camera scale

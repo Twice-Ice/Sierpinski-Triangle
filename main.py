@@ -27,12 +27,12 @@ def sierpinski(x1, y1, x2, y2, x3, y3, counter, isEven, screen, scale):
     counter += 1
     if counter <= countScaleVal:
         if isEven and (counter == countScaleVal): #only draws the triangles on the 8th frame to prevent overdraw.
-            r = random.randint(0, 255)#(counter * 100) % 255
-            g = random.randint(0, 255)
-            b = random.randint(0, 255)
-            color = (r, g, b)
-            # baseColor = 255
-            # color = (baseColor, baseColor, baseColor)
+            # r = random.randint(0, 255)#(counter * 100) % 255
+            # g = random.randint(0, 255)
+            # b = random.randint(0, 255)
+            # color = (r, g, b)
+            baseColor = 255
+            color = (baseColor, baseColor, baseColor)
             
             # pygame.draw.polygon(screen, color, ((x1, y1), (x2, y2), (x3, y3)))
             if onScreen(x1, y1) or onScreen(x2, y2):
@@ -113,7 +113,7 @@ while not doExit:
         print("lines = " + str(lines), scale, countScaleVal, posx3 / (2 ** countScaleVal), 0*scale + cameraY)
     if keys[pygame.K_DOWN]:
         scale -= scaleSpeed
-        cameraX += abs((posx1 * scale) - (posx1 * (scale - scaleSpeed)))
+        cameraX += (posx1 * scale) - (posx1 * (scale - scaleSpeed))
         # cameraY += moveSpeed
         if posx3 / (2 ** countScaleVal) < 4.5:
             countScaleVal -= 1
